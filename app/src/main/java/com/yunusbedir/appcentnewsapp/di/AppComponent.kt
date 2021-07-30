@@ -13,17 +13,19 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
-        AppModule::class
+        AndroidInjectionModule::class,
+        AppModule::class,
+        ActivitiesModule::class
     ]
 )
 interface AppComponent {
 
     @Component.Builder
-    interface Builder{
+    interface Builder {
         @BindsInstance
-        fun application(application: Application):Builder
+        fun application(application: Application): Builder
 
-        fun build():AppComponent
+        fun build(): AppComponent
     }
 
     fun inject(mainApplication: MainApplication)
