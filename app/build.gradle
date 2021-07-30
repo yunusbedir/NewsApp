@@ -18,6 +18,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+            buildConfigField "String" ,"NEWS_API_KEY","\"f1408fea9ed747b3874b29aa8b2482f8\""
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
