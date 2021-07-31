@@ -20,4 +20,13 @@ class WebViewFragment : BaseFragment() {
         binding = FragmentWebViewBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+    override fun initListeners() {
+
+    }
+
+    override fun initObservers() {
+
+    }
+
 }

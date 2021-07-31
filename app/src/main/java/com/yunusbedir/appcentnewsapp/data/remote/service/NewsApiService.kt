@@ -14,9 +14,9 @@ import retrofit2.http.Query
 interface NewsApiService {
 
     @GET("everything/")
-    fun fetchNews(
+    suspend fun fetchNews(
         @Query("q") searchText: String,
-        @Query("page") page: String,
+        @Query("page") page: Int,
         @Query("apiKey") apiKey: String = BuildConfig.NEWS_API_KEY,
-    ): Call<NewsResponse>
+    ): NewsResponse
 }

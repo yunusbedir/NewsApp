@@ -1,6 +1,8 @@
 package com.yunusbedir.appcentnewsapp.data.repository
 
 import com.yunusbedir.appcentnewsapp.data.remote.service.NewsApiService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -10,5 +12,21 @@ import javax.inject.Singleton
  */
 @Singleton
 class NewsApiRepository @Inject constructor(
-    val newsApiService: NewsApiService
-)
+    private val newsApiService: NewsApiService
+) {
+    private var searchText: String = ""
+    private var page: Int = 1
+
+    suspend fun searchNews(search: String) =
+        withContext(Dispatchers.IO) {
+            searchText = search
+            newsApiService.fetchNews(searchText, page)
+        }
+
+    suspend fun nextPageNews() =
+        withContext(Dispatchers.IO){
+            page++
+            newsApiService.fetchNews(searchText,page)
+        }
+
+}
