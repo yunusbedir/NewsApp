@@ -1,9 +1,7 @@
 package com.yunusbedir.appcentnewsapp.data.remote.service
 
-import com.squareup.okhttp.ResponseBody
 import com.yunusbedir.appcentnewsapp.BuildConfig
 import com.yunusbedir.appcentnewsapp.data.model.NewsResponse
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -13,7 +11,7 @@ import retrofit2.http.Query
  */
 interface NewsApiService {
 
-    @GET("everything/")
+    @GET("everything")
     suspend fun fetchNews(
         @Query("q") searchText: String,
         @Query("page") page: Int,

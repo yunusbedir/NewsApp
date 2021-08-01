@@ -10,7 +10,6 @@ import com.yunusbedir.appcentnewsapp.data.remote.ApiResponse
 import com.yunusbedir.appcentnewsapp.data.remote.ApiSuccessResponse
 import com.yunusbedir.appcentnewsapp.data.repository.NewsApiRepository
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -30,6 +29,7 @@ class NewsViewModel @Inject constructor(
                 val response = newsApiRepository.searchNews(searchText)
                 _newsList.postValue(ApiResponse.create(response.articles))
             } catch (e: Exception) {
+                e.printStackTrace()
                 _newsList.postValue(ApiResponse.create(e))
             }
         }

@@ -1,13 +1,12 @@
 package com.yunusbedir.appcentnewsapp.data.model
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Source(
-    @SerializedName("id")
-    @Expose
+    @Json(name = "id")
     val id: Any?,
-    @SerializedName("name")
-    @Expose
+    @Json(name = "name")
     val name: String
 )

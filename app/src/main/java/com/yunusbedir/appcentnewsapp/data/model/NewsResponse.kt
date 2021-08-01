@@ -1,16 +1,14 @@
 package com.yunusbedir.appcentnewsapp.data.model
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class NewsResponse(
-    @SerializedName("articles")
-    @Expose
+    @Json(name = "articles")
     val articles: List<Article>,
-    @SerializedName("status")
-    @Expose
+    @Json(name = "status")
     val status: String,
-    @SerializedName("totalResults")
-    @Expose
+    @Json(name = "totalResults")
     val totalResults: Int
 )

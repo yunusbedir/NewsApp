@@ -1,31 +1,24 @@
 package com.yunusbedir.appcentnewsapp.data.model
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Article(
-    @SerializedName("author")
-    @Expose
+    @Json(name = "author")
     val author: String,
-    @SerializedName("content")
-    @Expose
+    @Json(name = "content")
     val content: String,
-    @SerializedName("description")
-    @Expose
+    @Json(name = "description")
     val description: String,
-    @SerializedName("publishedAt")
-    @Expose
+    @Json(name = "publishedAt")
     val publishedAt: String,
-    @SerializedName("source")
-    @Expose
+    @Json(name = "source")
     val source: Source,
-    @SerializedName("title")
-    @Expose
+    @Json(name = "title")
     val title: String,
-    @SerializedName("url")
-    @Expose
+    @Json(name = "url")
     val url: String,
-    @SerializedName("urlToImage")
-    @Expose
+    @Json(name = "urlToImage")
     val urlToImage: String
 )

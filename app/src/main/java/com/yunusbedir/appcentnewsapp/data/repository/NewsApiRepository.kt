@@ -20,13 +20,14 @@ class NewsApiRepository @Inject constructor(
     suspend fun searchNews(search: String) =
         withContext(Dispatchers.IO) {
             searchText = search
+            page = 1
             newsApiService.fetchNews(searchText, page)
         }
 
     suspend fun nextPageNews() =
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             page++
-            newsApiService.fetchNews(searchText,page)
+            newsApiService.fetchNews(searchText, page)
         }
 
 }
