@@ -5,8 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.yunusbedir.appcentnewsapp.data.model.Article
+import com.yunusbedir.appcentnewsapp.common.loadUrl
 import com.yunusbedir.appcentnewsapp.data.model.FavoriteNews
 import com.yunusbedir.appcentnewsapp.databinding.ItemRecyclerViewNewsBinding
 
@@ -37,7 +36,7 @@ class NewsRecyclerViewAdapter :
         fun bind(item: FavoriteNews, listener: ((FavoriteNews) -> Unit)?) {
             binding.textViewTitle.text = item.title
             binding.textViewDescription.text = item.description
-            Glide.with(binding.root.context).load(item.urlToImage).into(binding.imageView)
+            binding.imageView.loadUrl(item.urlToImage)
             binding.root.setOnClickListener {
                 listener?.invoke(item)
             }

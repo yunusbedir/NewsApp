@@ -3,10 +3,12 @@ package com.yunusbedir.appcentnewsapp.ui.detail
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.yunusbedir.appcentnewsapp.R
+import com.yunusbedir.appcentnewsapp.common.expConvertToDateFormat
+import com.yunusbedir.appcentnewsapp.common.loadUrl
 import com.yunusbedir.appcentnewsapp.databinding.FragmentNewsDetailBinding
 import com.yunusbedir.appcentnewsapp.ui.BaseFragment
 import com.yunusbedir.appcentnewsapp.ui.SharedViewModel
@@ -24,7 +26,7 @@ class NewsDetailFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentNewsDetailBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         return binding.root
@@ -38,19 +40,20 @@ class NewsDetailFragment : BaseFragment() {
 
     override fun initObservers() {
         sharedViewModel.selectedArticle.observe(viewLifecycleOwner) {
-            Glide.with(binding.root.context).load(it.urlToImage).into(binding.imageView)
+            binding.imageView.loadUrl(it.urlToImage)
             binding.textViewAuthor.text = it.author
             binding.textViewContent.text = it.content
-            binding.textViewPublishDate.text = it.publishedAt
+            binding.textViewPublishDate.text = it.publishedAt.expConvertToDateFormat()
             binding.title.text = it.title
             try {
                 menu.findItem(R.id.item_favorite).isChecked = it.isFavoriteChecked
-                menu.findItem(R.id.item_favorite).icon =
-                    if (it.isFavoriteChecked)
-                        context?.getDrawable(R.drawable.ic_favorite)
-                    else
-                        context?.getDrawable(R.drawable.ic_favorite_border)
-
+                context?.let { context ->
+                    menu.findItem(R.id.item_favorite).icon =
+                        if (it.isFavoriteChecked)
+                            AppCompatResources.getDrawable(context, R.drawable.ic_favorite)
+                        else
+                            AppCompatResources.getDrawable(context, R.drawable.ic_favorite_border)
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -76,12 +79,15 @@ class NewsDetailFragment : BaseFragment() {
             }
             R.id.item_favorite -> {
                 item.isChecked = !item.isChecked
-                if (item.isChecked) {
-                    item.icon = context?.getDrawable(R.drawable.ic_favorite)
-                    sharedViewModel.addFavoriteNews()
-                } else {
-                    item.icon = context?.getDrawable(R.drawable.ic_favorite_border)
-                    sharedViewModel.removeFavoriteNews()
+                context?.let { context ->
+                    item.icon =
+                        if (item.isChecked) {
+                            sharedViewModel.addFavoriteNews()
+                            AppCompatResources.getDrawable(context, R.drawable.ic_favorite)
+                        } else {
+                            sharedViewModel.removeFavoriteNews()
+                            AppCompatResources.getDrawable(context, R.drawable.ic_favorite_border)
+                        }
                 }
             }
         }

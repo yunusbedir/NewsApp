@@ -3,6 +3,7 @@ package com.yunusbedir.appcentnewsapp.di
 import android.app.Application
 import androidx.room.Room
 import com.yunusbedir.appcentnewsapp.BuildConfig
+import com.yunusbedir.appcentnewsapp.common.adapter.NewsRecyclerViewAdapter
 import com.yunusbedir.appcentnewsapp.data.local.FavoriteNewsDao
 import com.yunusbedir.appcentnewsapp.data.local.RoomDB
 import com.yunusbedir.appcentnewsapp.data.remote.service.NewsApiService
@@ -56,4 +57,7 @@ class AppModule {
     fun provideFavoriteNewsDao(roomDB: RoomDB): FavoriteNewsDao =
         roomDB.getFavoriteNewsDao()
 
+    @Provides
+    fun provideNewsAdapter(): NewsRecyclerViewAdapter =
+        NewsRecyclerViewAdapter()
 }

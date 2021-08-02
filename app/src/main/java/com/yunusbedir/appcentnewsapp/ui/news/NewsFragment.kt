@@ -16,6 +16,7 @@ import com.yunusbedir.appcentnewsapp.data.remote.ApiSuccessResponse
 import com.yunusbedir.appcentnewsapp.databinding.FragmentNewsBinding
 import com.yunusbedir.appcentnewsapp.ui.BaseFragment
 import com.yunusbedir.appcentnewsapp.ui.SharedViewModel
+import javax.inject.Inject
 
 
 class NewsFragment : BaseFragment() {
@@ -25,15 +26,13 @@ class NewsFragment : BaseFragment() {
     private val newsViewModel by viewModels<NewsViewModel> { factory }
     private val sharedViewModel by activityViewModels<SharedViewModel> { factory }
 
-
-    private val adapter: NewsRecyclerViewAdapter by lazy {
-        NewsRecyclerViewAdapter()
-    }
+    @Inject
+    lateinit var adapter: NewsRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentNewsBinding.inflate(inflater, container, false)
         return binding.root
     }

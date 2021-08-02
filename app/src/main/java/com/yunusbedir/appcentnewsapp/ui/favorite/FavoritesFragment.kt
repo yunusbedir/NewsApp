@@ -11,6 +11,7 @@ import com.yunusbedir.appcentnewsapp.common.adapter.NewsRecyclerViewAdapter
 import com.yunusbedir.appcentnewsapp.databinding.FragmentFavoritesBinding
 import com.yunusbedir.appcentnewsapp.ui.BaseFragment
 import com.yunusbedir.appcentnewsapp.ui.SharedViewModel
+import javax.inject.Inject
 
 class FavoritesFragment : BaseFragment() {
 
@@ -19,14 +20,13 @@ class FavoritesFragment : BaseFragment() {
     private val favoritesViewModel by viewModels<FavoritesViewModel> { factory }
     private val sharedViewModel by activityViewModels<SharedViewModel> { factory }
 
-    private val adapter: NewsRecyclerViewAdapter by lazy {
-        NewsRecyclerViewAdapter()
-    }
+    @Inject
+    lateinit var adapter: NewsRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
