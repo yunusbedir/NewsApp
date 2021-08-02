@@ -31,7 +31,9 @@ class MainActivity : BaseActivity() {
         )
 
         setSupportActionBar(binding.toolbar)
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        val appBarConfiguration = AppBarConfiguration.Builder(
+            setOf(R.id.favoritesFragment,R.id.newsFragment)
+        ).build()
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
     }
