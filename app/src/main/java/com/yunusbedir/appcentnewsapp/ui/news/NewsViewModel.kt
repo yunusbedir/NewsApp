@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yunusbedir.appcentnewsapp.data.model.Article
+import com.yunusbedir.appcentnewsapp.data.model.FavoriteNews
 import com.yunusbedir.appcentnewsapp.data.remote.ApiErrorResponse
 import com.yunusbedir.appcentnewsapp.data.remote.ApiResponse
 import com.yunusbedir.appcentnewsapp.data.remote.ApiSuccessResponse
@@ -20,14 +21,17 @@ class NewsViewModel @Inject constructor(
     private val newsApiRepository: NewsApiRepository
 ) : ViewModel() {
 
-    private val _newsList = MutableLiveData<ApiResponse<List<Article>>>()
-    val newsList = _newsList as LiveData<ApiResponse<List<Article>>>
+    private val _newsList = MutableLiveData<ApiResponse<List<FavoriteNews>>>()
+    val newsList = _newsList as LiveData<ApiResponse<List<FavoriteNews>>>
 
     fun fetchNews(searchText: String) {
         viewModelScope.launch {
             try {
                 val response = newsApiRepository.searchNews(searchText)
-                _newsList.postValue(ApiResponse.create(response.articles))
+                val listNews = response.articles.map {
+                    it.convertToFavoriteNews(false)
+                }
+                _newsList.postValue(ApiResponse.create(listNews))
             } catch (e: Exception) {
                 e.printStackTrace()
                 _newsList.postValue(ApiResponse.create(e))
@@ -40,14 +44,21 @@ class NewsViewModel @Inject constructor(
             try {
                 val response = newsApiRepository.nextPageNews()
                 when (_newsList.value) {
-                    is ApiErrorResponse ->
-                        _newsList.postValue(ApiResponse.create(response.articles))
+                    is ApiErrorResponse ->{
+                        val listNews = response.articles.map {
+                            it.convertToFavoriteNews(false)
+                        }
+                        _newsList.postValue(ApiResponse.create(listNews))
+                    }
                     is ApiSuccessResponse -> {
                         val newsListArray = arrayListOf<Article>().apply {
                             addAll((_newsList.value as ApiSuccessResponse<List<Article>>).response)
                             addAll(response.articles)
                         }
-                        _newsList.postValue(ApiResponse.create(newsListArray))
+                        val listNews = newsListArray.map {
+                            it.convertToFavoriteNews(false)
+                        }
+                        _newsList.postValue(ApiResponse.create(listNews))
                     }
                 }
             } catch (e: Exception) {

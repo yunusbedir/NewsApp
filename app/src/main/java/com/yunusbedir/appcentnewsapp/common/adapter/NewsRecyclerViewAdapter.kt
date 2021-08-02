@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.yunusbedir.appcentnewsapp.data.model.Article
+import com.yunusbedir.appcentnewsapp.data.model.FavoriteNews
 import com.yunusbedir.appcentnewsapp.databinding.ItemRecyclerViewNewsBinding
 
 
@@ -14,11 +15,11 @@ import com.yunusbedir.appcentnewsapp.databinding.ItemRecyclerViewNewsBinding
  * Created by YUNUS BEDİR on 31.07.2021.
  */
 class NewsRecyclerViewAdapter :
-    ListAdapter<Article, NewsRecyclerViewAdapter.NewsViewHolder>(NewsDiffUtil()) {
+    ListAdapter<FavoriteNews, NewsRecyclerViewAdapter.NewsViewHolder>(NewsDiffUtil()) {
 
-    private lateinit var listener: (Article) -> Unit
+    private lateinit var listener: (FavoriteNews) -> Unit
 
-    fun setItemClickListener(listener: (Article) -> Unit) {
+    fun setItemClickListener(listener: (FavoriteNews) -> Unit) {
         this.listener = listener
     }
 
@@ -33,7 +34,7 @@ class NewsRecyclerViewAdapter :
     class NewsViewHolder(private val binding: ItemRecyclerViewNewsBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Article, listener: ((Article) -> Unit)?) {
+        fun bind(item: FavoriteNews, listener: ((FavoriteNews) -> Unit)?) {
             binding.textViewTitle.text = item.title
             binding.textViewDescription.text = item.description
             Glide.with(binding.root.context).load(item.urlToImage).into(binding.imageView)
@@ -54,11 +55,11 @@ class NewsRecyclerViewAdapter :
         }
     }
 
-    class NewsDiffUtil : DiffUtil.ItemCallback<Article>() {
-        override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean =
+    class NewsDiffUtil : DiffUtil.ItemCallback<FavoriteNews>() {
+        override fun areItemsTheSame(oldItem: FavoriteNews, newItem: FavoriteNews): Boolean =
             oldItem.description == newItem.description
 
-        override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean =
+        override fun areContentsTheSame(oldItem: FavoriteNews, newItem: FavoriteNews): Boolean =
             oldItem.description == newItem.description
 
     }

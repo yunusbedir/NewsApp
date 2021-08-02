@@ -3,8 +3,11 @@ package com.yunusbedir.appcentnewsapp.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.yunusbedir.appcentnewsapp.data.model.Article
+import com.yunusbedir.appcentnewsapp.data.model.FavoriteNews
 import com.yunusbedir.appcentnewsapp.data.repository.NewsApiRepository
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -15,11 +18,42 @@ class SharedViewModel @Inject constructor(
     private val newsApiRepository: NewsApiRepository
 ) : ViewModel() {
 
-    private val _selectedArticle = MutableLiveData<Article>()
-    val selectedArticle = _selectedArticle as LiveData<Article>
+    private val _selectedArticle = MutableLiveData<FavoriteNews>()
+    val selectedArticle = _selectedArticle as LiveData<FavoriteNews>
 
-    fun selectArticle(news: Article) {
-        _selectedArticle.postValue(news)
+    fun selectArticle(news: FavoriteNews) {
+        viewModelScope.launch {
+            try {
+                val favoriteNews = newsApiRepository.getFavoriteNews(news.url)
+                if (favoriteNews != null)
+                    _selectedArticle.postValue(favoriteNews)
+                else
+                    _selectedArticle.postValue(news)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun removeFavoriteNews() {
+        viewModelScope.launch {
+            try {
+                newsApiRepository.deleteFavoriteNews(_selectedArticle.value!!)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun addFavoriteNews() {
+        viewModelScope.launch {
+            try {
+                newsApiRepository.addFavoriteNews(_selectedArticle.value!!)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
 }

@@ -21,4 +21,15 @@ data class Article(
     val url: String,
     @Json(name = "urlToImage")
     val urlToImage: String
-)
+) {
+    fun convertToFavoriteNews(isFavoriteChecked: Boolean): FavoriteNews = FavoriteNews(
+        author = author,
+        content = content,
+        description = description,
+        publishedAt = publishedAt,
+        title = title,
+        url = url,
+        urlToImage = urlToImage,
+        isFavoriteChecked = isFavoriteChecked
+    )
+}
