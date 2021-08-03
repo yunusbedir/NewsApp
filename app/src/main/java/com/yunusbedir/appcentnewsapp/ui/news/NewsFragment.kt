@@ -23,7 +23,7 @@ class NewsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentNewsBinding
 
-    private val newsViewModel by viewModels<NewsViewModel> { factory }
+    private val newsViewModel by activityViewModels<NewsViewModel> { factory }
     private val sharedViewModel by activityViewModels<SharedViewModel> { factory }
 
     @Inject
@@ -45,11 +45,13 @@ class NewsFragment : BaseFragment() {
     override fun initListeners() {
         binding.tilSearch.setStartIconOnClickListener {
             newsViewModel.fetchNews(binding.editTextSearch.text.toString())
+            binding.swipeRefreshLayoutNews.isRefreshing = true
         }
 
         binding.editTextSearch.setOnKeyListener { _, _, event ->
             if (event.action == KeyEvent.ACTION_UP && event.keyCode == KEYCODE_ENTER) {
                 newsViewModel.fetchNews(binding.editTextSearch.text.toString())
+                binding.swipeRefreshLayoutNews.isRefreshing = true
             }
             false
         }
@@ -58,16 +60,22 @@ class NewsFragment : BaseFragment() {
             sharedViewModel.selectArticle(it)
             findNavController().navigate(NewsFragmentDirections.actionNewsFragmentToNewsDetailFragment())
         }
+
+        binding.swipeRefreshLayoutNews.setOnRefreshListener {
+            newsViewModel.refreshNews()
+        }
     }
 
     override fun initObservers() {
         newsViewModel.newsList.observe(viewLifecycleOwner) {
+            binding.swipeRefreshLayoutNews.isRefreshing = false
             when (it) {
                 is ApiSuccessResponse -> {
                     adapter.submitList(it.response)
                 }
                 is ApiErrorResponse -> {
-                    Toast.makeText(context, it.errorMessage, Toast.LENGTH_LONG).show()
+                    if (it.errorMessage.isNullOrEmpty().not())
+                        Toast.makeText(context, it.errorMessage, Toast.LENGTH_LONG).show()
                 }
             }
         }

@@ -4,11 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yunusbedir.appcentnewsapp.data.model.Article
 import com.yunusbedir.appcentnewsapp.data.model.FavoriteNews
-import com.yunusbedir.appcentnewsapp.data.remote.ApiErrorResponse
 import com.yunusbedir.appcentnewsapp.data.remote.ApiResponse
-import com.yunusbedir.appcentnewsapp.data.remote.ApiSuccessResponse
 import com.yunusbedir.appcentnewsapp.data.repository.NewsApiRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,29 +36,16 @@ class NewsViewModel @Inject constructor(
         }
     }
 
-    fun fetchNextPageNews() {
+    fun refreshNews() {
         viewModelScope.launch {
             try {
-                val response = newsApiRepository.nextPageNews()
-                when (_newsList.value) {
-                    is ApiErrorResponse ->{
-                        val listNews = response.articles.map {
-                            it.convertToFavoriteNews(false)
-                        }
-                        _newsList.postValue(ApiResponse.create(listNews))
-                    }
-                    is ApiSuccessResponse -> {
-                        val newsListArray = arrayListOf<Article>().apply {
-                            addAll((_newsList.value as ApiSuccessResponse<List<Article>>).response)
-                            addAll(response.articles)
-                        }
-                        val listNews = newsListArray.map {
-                            it.convertToFavoriteNews(false)
-                        }
-                        _newsList.postValue(ApiResponse.create(listNews))
-                    }
+                val response = newsApiRepository.refreshNews()
+                val listNews = response.articles.map {
+                    it.convertToFavoriteNews(false)
                 }
+                _newsList.postValue(ApiResponse.create(listNews))
             } catch (e: Exception) {
+                e.printStackTrace()
                 _newsList.postValue(ApiResponse.create(e))
             }
         }

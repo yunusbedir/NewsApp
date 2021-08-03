@@ -12,11 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
-        app:endIconMode="clear_text"
         android:maxLines="1"
         app:endIconDrawable="@drawable/ic_close"
-        app:startIconDrawable="@drawable/ic_search"
-        app:layout_constraintTop_toTopOf="parent">
+        app:endIconMode="clear_text"
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@drawable/ic_search">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_search"
@@ -24,19 +24,26 @@
             android:layout_height="wrap_content"
             android:hint="Search"
             android:maxLines="1"
-            android:singleLine="true"
-            android:padding="6dp" />
+            android:padding="6dp"
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_news"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
+        android:id="@+id/swipe_refresh_layout_news"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_search"
-        tools:itemCount="4"
-        tools:listitem="@layout/item_recycler_view_news" />
+        app:layout_constraintTop_toBottomOf="@id/til_search">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_news"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_recycler_view_news" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

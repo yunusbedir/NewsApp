@@ -27,9 +27,8 @@ class NewsApiRepository @Inject constructor(
             newsApiService.fetchNews(searchText, page)
         }
 
-    suspend fun nextPageNews() =
+    suspend fun refreshNews() =
         withContext(Dispatchers.IO) {
-            page++
             newsApiService.fetchNews(searchText, page)
         }
 
