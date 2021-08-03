@@ -31,4 +31,28 @@ abstract class BaseFragment : Fragment() {
     abstract fun initListeners()
 
     abstract fun initObservers()
+
+    fun setProgressBarHorizontal(progress: Int) {
+        if (activity != null && activity is MainActivity) {
+            with((activity as MainActivity).binding.progresBar) {
+                if (visibility == View.GONE)
+                    visibility = View.VISIBLE
+                setProgress(progress)
+            }
+        }
+    }
+
+    fun hideProgressBarHorizontal() {
+        if (activity != null && activity is MainActivity) {
+            with((activity as MainActivity).binding.progresBar) {
+                if (visibility == View.VISIBLE)
+                    visibility = View.GONE
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        hideProgressBarHorizontal()
+        super.onDestroyView()
+    }
 }

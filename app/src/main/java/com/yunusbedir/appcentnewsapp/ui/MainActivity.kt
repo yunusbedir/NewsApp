@@ -11,7 +11,7 @@ import com.yunusbedir.appcentnewsapp.databinding.ActivityMainBinding
 
 class MainActivity : BaseActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ class MainActivity : BaseActivity() {
 
         setSupportActionBar(binding.toolbar)
         val appBarConfiguration = AppBarConfiguration.Builder(
-            setOf(R.id.favoritesFragment,R.id.newsFragment)
+            setOf(R.id.favoritesFragment, R.id.newsFragment)
         ).build()
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
