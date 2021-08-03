@@ -18,38 +18,17 @@ class SharedViewModel @Inject constructor(
     private val newsApiRepository: NewsApiRepository
 ) : ViewModel() {
 
-    private val _selectedArticle = MutableLiveData<FavoriteNews>()
-    val selectedArticle = _selectedArticle as LiveData<FavoriteNews>
+    private val _selectedArticle = MutableLiveData<FavoriteNews?>()
+    val selectedArticle = _selectedArticle as LiveData<FavoriteNews?>
 
-    fun selectArticle(news: FavoriteNews) {
+    fun selectArticle(news: FavoriteNews?) {
         viewModelScope.launch {
             try {
-                val favoriteNews = newsApiRepository.getFavoriteNews(news.url)
+                val favoriteNews = newsApiRepository.getFavoriteNews(news?.url ?: "")
                 if (favoriteNews != null)
                     _selectedArticle.postValue(favoriteNews)
                 else
                     _selectedArticle.postValue(news)
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    fun removeFavoriteNews() {
-        viewModelScope.launch {
-            try {
-                newsApiRepository.deleteFavoriteNews(_selectedArticle.value!!)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    fun addFavoriteNews() {
-        viewModelScope.launch {
-            try {
-                newsApiRepository.addFavoriteNews(_selectedArticle.value!!)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

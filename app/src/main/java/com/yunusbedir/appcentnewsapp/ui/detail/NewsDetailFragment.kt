@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.yunusbedir.appcentnewsapp.R
 import com.yunusbedir.appcentnewsapp.common.expConvertToDateFormat
@@ -19,6 +20,7 @@ class NewsDetailFragment : BaseFragment() {
     private lateinit var binding: FragmentNewsDetailBinding
 
     private val sharedViewModel by activityViewModels<SharedViewModel> { factory }
+    private val newsDetailViewModel by viewModels<NewsDetailViewModel> { factory }
 
     private lateinit var menu: Menu
 
@@ -40,22 +42,27 @@ class NewsDetailFragment : BaseFragment() {
 
     override fun initObservers() {
         sharedViewModel.selectedArticle.observe(viewLifecycleOwner) {
-            binding.imageView.loadUrl(it.urlToImage)
-            binding.textViewAuthor.text = it.author
-            binding.textViewContent.text = it.content
-            binding.textViewPublishDate.text = it.publishedAt.expConvertToDateFormat()
-            binding.title.text = it.title
-            try {
-                menu.findItem(R.id.item_favorite).isChecked = it.isFavoriteChecked
-                context?.let { context ->
-                    menu.findItem(R.id.item_favorite).icon =
-                        if (it.isFavoriteChecked)
-                            AppCompatResources.getDrawable(context, R.drawable.ic_favorite)
-                        else
-                            AppCompatResources.getDrawable(context, R.drawable.ic_favorite_border)
+            if (it != null) {
+                binding.imageView.loadUrl(it.urlToImage)
+                binding.textViewAuthor.text = it.author
+                binding.textViewContent.text = it.content
+                binding.textViewPublishDate.text = it.publishedAt.expConvertToDateFormat()
+                binding.title.text = it.title
+                try {
+                    menu.findItem(R.id.item_favorite).isChecked = it.isFavoriteChecked
+                    context?.let { context ->
+                        menu.findItem(R.id.item_favorite).icon =
+                            if (it.isFavoriteChecked)
+                                AppCompatResources.getDrawable(context, R.drawable.ic_favorite)
+                            else
+                                AppCompatResources.getDrawable(
+                                    context,
+                                    R.drawable.ic_favorite_border
+                                )
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
     }
@@ -82,10 +89,10 @@ class NewsDetailFragment : BaseFragment() {
                 context?.let { context ->
                     item.icon =
                         if (item.isChecked) {
-                            sharedViewModel.addFavoriteNews()
+                            newsDetailViewModel.addFavoriteNews(sharedViewModel.selectedArticle.value)
                             AppCompatResources.getDrawable(context, R.drawable.ic_favorite)
                         } else {
-                            sharedViewModel.removeFavoriteNews()
+                            newsDetailViewModel.removeFavoriteNews(sharedViewModel.selectedArticle.value)
                             AppCompatResources.getDrawable(context, R.drawable.ic_favorite_border)
                         }
                 }
@@ -93,4 +100,11 @@ class NewsDetailFragment : BaseFragment() {
         }
         return true
     }
+
+    override fun onDetach() {
+        sharedViewModel.selectArticle(null)
+        super.onDetach()
+    }
+
+
 }

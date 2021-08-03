@@ -3,6 +3,7 @@ package com.yunusbedir.appcentnewsapp.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.yunusbedir.appcentnewsapp.ui.SharedViewModel
+import com.yunusbedir.appcentnewsapp.ui.detail.NewsDetailViewModel
 import com.yunusbedir.appcentnewsapp.ui.favorite.FavoritesViewModel
 import com.yunusbedir.appcentnewsapp.ui.news.NewsViewModel
 import dagger.Binds
@@ -28,6 +29,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FavoritesViewModel::class)
     abstract fun bindFavoritesViewModel(viewModel: FavoritesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NewsDetailViewModel::class)
+    abstract fun bindNewsDetailViewModel(viewModel: NewsDetailViewModel): ViewModel
 
     @Binds
     @IntoMap
