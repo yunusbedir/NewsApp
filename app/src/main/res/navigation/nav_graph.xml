@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/newsFragment">
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.yunusbedir.appcentnewsapp.ui.favorite.FavoritesFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_favoritesFragment_to_newsDetailFragment"
+            app:destination="@id/newsDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/newsFragment"
+        android:name="com.yunusbedir.appcentnewsapp.ui.news.NewsFragment"
+        android:label="Appcent NewsApp"
+        tools:layout="@layout/fragment_news">
+        <action
+            android:id="@+id/action_newsFragment_to_newsDetailFragment"
+            app:destination="@id/newsDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/newsDetailFragment"
+        android:name="com.yunusbedir.appcentnewsapp.ui.detail.NewsDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_news_detail">
+        <action
+            android:id="@+id/action_newsDetailFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment"
+            app:enterAnim="@anim/push_up_in"
+            app:exitAnim="@anim/push_down_out"
+            app:popEnterAnim="@anim/push_down_in"
+            app:popExitAnim="@anim/push_up_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.yunusbedir.appcentnewsapp.ui.webview.WebViewFragment"
+        android:label="News Source"
+        tools:layout="@layout/fragment_web_view" />
+</navigation>
