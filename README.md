@@ -1,5 +1,4 @@
-# AppcentNewsApp
-Appcent Challenge
+# NewsApp
 
 ### Kullanılan kütüphaneler
 
